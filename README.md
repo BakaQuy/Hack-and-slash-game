@@ -1,2 +1,2 @@
 # Hack-and-slash-game
-Small hack and slash game inspired from The Legend of Zelda.
+Small hack and slash game inspired from _The Legend of Zelda_.
