@@ -1,14 +1,14 @@
 package Model;
 
-import java.awt.Rectangle;
+import java.awt.*;
 
-public class Projectile implements Damage, Collidable, Runnable {
+public class Projectile implements Collidable, Collision, Runnable {
 
-	private int damage;
 	private int speed;
 	private int direction;
-	public boolean visible = true;
-	private Rectangle hitBox;
+	private int damage = 10;
+	private boolean visible = true;
+	private Rectangle hitbox;
 	private Thread thread;
 
 	public Projectile(int posX, int posY, int direction, int speed, int damage) {
@@ -19,8 +19,8 @@ public class Projectile implements Damage, Collidable, Runnable {
 		this.thread = new Thread(this);
 		this.thread.start();
 	}
-
-	public void generateHitbox(int posX, int posY, int direction) {
+	
+	private void generateHitbox(int posX, int posY, int direction) {
 		int x = 0;
 		int y = 0;
 		switch (direction) {
@@ -41,9 +41,9 @@ public class Projectile implements Damage, Collidable, Runnable {
 			y = posY + 40;
 			break;
 		}
-		this.hitBox = new Rectangle(x, y, 10, 10);
+		this.hitbox = new Rectangle(x, y, 10, 10);
 	}
-
+	
 	public int getDirection() {
 		return direction;
 	}
@@ -51,57 +51,73 @@ public class Projectile implements Damage, Collidable, Runnable {
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
-
-	@Override
-	public void doDamage(int damage, Collidable collidable) {
-		collidable.getDamageFromPlayer(damage);
-	}
-
-	@Override
-	public void explode() {
-		this.visible = false;
-	}
-
+	
 	@Override
 	public Rectangle getHitbox() {
-		return hitBox;
+		return hitbox;
 	}
 
 	@Override
 	public void setHitbox(int x, int y) {
 		if (visible) {
-			hitBox.translate(x, y);
+			hitbox.translate(x, y);
 		} else {
-			hitBox.setRect(0, 0, 0, 0);
+			hitbox.setRect(0, 0, 0, 0);
 		}
 	}
 
+	private void explode() {
+		this.visible = false;
+	}
+
+    @Override
+    public boolean collides(Collidable collidable) {
+        boolean isCollision;
+        Rectangle box = collidable.getHitbox();
+        if (this.hitbox.intersects(box)) {
+            isCollision = true;
+        } else {
+            isCollision = false;
+        }
+        return isCollision;
+    }
 	@Override
-	public boolean collides(Collidable collidable) {
-		boolean collision;
-		Rectangle box = collidable.getHitbox();
-		if (this.hitBox.intersects(box)) {
-			collision = true;
-		} else {
-			collision = false;
-		}
-		return collision;
+	public void acceptCollision(Collision collision) {
+        collision.applyCollisionOn(this);
 	}
 
 	@Override
-	public void applyCollisionOn(Collidable collidable) {
-		if (visible) {
-			doDamage(this.damage, collidable);
-			this.explode();
-		}
+	public void applyCollisionOn(Potion potion) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void applyCollisionOn(Monster monster) {
+        monster.getDamage(damage);
+        this.explode();
 	}
 
 	@Override
-	public int collidesWith(Collidable collidable) {
-		return 0;
+	public void applyCollisionOn(Player player) {
 	}
 
-	public void update() {
+    @Override
+    public void applyCollisionOn(Block block) {
+        this.explode();
+    }
+
+    @Override
+	public void applyCollisionOn(Projectile projectile) {
+        this.explode();
+	}
+
+	@Override
+	public void applyCollisionOn(Gate gate) {
+        this.explode();
+	}
+
+	private void update() {
 		if (direction == 0) {
 			this.setHitbox(-speed, 0);
 		} else if (direction == 1) {
@@ -123,23 +139,5 @@ public class Projectile implements Damage, Collidable, Runnable {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public void getDamageFromMonster(int damage) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void getDamageFromPlayer(int damage) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void goBack(Collidable collidable) {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class Level {
 
 	private ArrayList<String> lines = new ArrayList<>();
+	char[][] mapMatrix;
 	private int width = 0;
 	private int height = 0;
-	char[][] mapMatrix;
 
 	public Level(String filename) {
 		try {

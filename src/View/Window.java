@@ -11,18 +11,27 @@ public class Window extends JFrame implements Observer {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public static double WINDOW_WIDTH = 816.0;
+	public static double WINDOW_HEIGHT = 839.0;
+	
 	private Map map = new Map();
 
     public Window() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1016,1039);
+        this.setSize((int)WINDOW_WIDTH,(int)WINDOW_HEIGHT);
+        this.setResizable(true);
         this.setLocationRelativeTo(null);
         this.getContentPane().add(this.map);
         this.setVisible(true);
     }
+    
+    public void setWINDOW_SIZE(int width, int height){
+    	WINDOW_WIDTH = (double) width;
+    	WINDOW_HEIGHT = (double) height;
+    }
 
-    public void draw(char[][] mapMatrix, ArrayList<Player> players, ArrayList<Monster> monsters, ArrayList<Block> blocks, ArrayList<Projectile> projectiles) {
-        map.refresh(mapMatrix, players, monsters, blocks, projectiles);
+    public void draw(char[][] mapMatrix, ArrayList<Player> players, ArrayList<Monster> monsters, ArrayList<Item> items, ArrayList<Projectile> projectiles) {
+        map.refresh(mapMatrix, players, monsters, items, projectiles);
     }
 
     public void setKeyListener(KeyListener controller) {

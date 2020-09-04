@@ -6,12 +6,12 @@ public abstract class Decor implements Collidable {
 
 	private int posX;
 	private int posY;
-	private Rectangle hitBox;
+	private Rectangle hitbox;
 
 	public Decor(int x, int y) {
-		this.setPosX(x);
-		this.setPosY(y);
-		this.hitBox = new Rectangle(this.posX, this.posY, sizeSquare, sizeSquare);
+		this.setPosX(x*ratioWidth);
+		this.setPosY(y*ratioHeight);
+		this.hitbox = new Rectangle(this.posX, this.posY, ratioWidth, ratioHeight);
 	}
 
 	public int getPosX() {
@@ -19,8 +19,7 @@ public abstract class Decor implements Collidable {
 	}
 
 	public void setPosX(int posX) {
-		this.posX = posX * sizeSquare; // *50 : en reference a la taille de la
-										// map
+		this.posX = posX;
 	}
 
 	public int getPosY() {
@@ -28,72 +27,20 @@ public abstract class Decor implements Collidable {
 	}
 
 	public void setPosY(int posY) {
-		this.posY = posY * sizeSquare; // *50 : en reference a la taille de la
-										// map
+		this.posY = posY;
 	}
 
 	@Override
 	public Rectangle getHitbox() {
-		return hitBox;
+		return hitbox;
 	}
 
 	@Override
 	public void setHitbox(int x, int y) {
-		this.hitBox.setBounds(x, y, sizeSquare, sizeSquare);
+		this.hitbox.setBounds(x, y, ratioWidth, ratioHeight);
 	}
 
 	public void setHitBox(int x, int y, int width, int heigth) {
-		this.hitBox.setBounds(x, y, width, heigth);
-	}
-
-	@Override
-	public boolean collides(Collidable collidable) {
-		boolean collision;
-		Rectangle box = collidable.getHitbox();
-		if (this.hitBox.intersects(box)) {
-			collision = true;
-		} else {
-			collision = false;
-		}
-		return collision;
-	}
-
-	@Override
-	public void applyCollisionOn(Collidable collidable) {
-		collidable.goBack(this);
-	}
-
-	@Override
-	public int collidesWith(Collidable collidable) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void goBack(Collidable collidable) {
-		int edge = collidesWith(collidable);
-		int xTarget = (int) collidable.getHitbox().getX();
-		int yTarget = (int) collidable.getHitbox().getY();
-
-		if (edge == 6) {
-			posX = xTarget - (sizeSquare - 1);
-		} else if (edge == 4) {
-			posX = xTarget + (sizeSquare - 1);
-		} else if (edge == 2) {
-			posY = yTarget - (sizeSquare - 1);
-		} else if (edge == 8) {
-			posY = yTarget + (sizeSquare - 1);
-		}
-	}
-
-	@Override
-	public void getDamageFromMonster(int damage) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void getDamageFromPlayer(int damage) {
-		// TODO Auto-generated method stub
-
+		this.hitbox.setBounds(x, y, width, heigth);
 	}
 }

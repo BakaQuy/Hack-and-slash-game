@@ -2,23 +2,16 @@ package Model;
 
 import java.awt.*;
 
+import View.Map;
+
 public interface Collidable {
-	
-	public final int sizeSquare = 40;
-	
+
+	int ratioWidth = Map.ratioWidth; // global sprite size
+	int ratioHeight = Map.ratioHeight; // global sprite size
+
 	Rectangle getHitbox();
 
 	void setHitbox(int x, int y);
 
-	boolean collides(Collidable collidable);
-
-	void applyCollisionOn(Collidable collidable);
-
-	int collidesWith(Collidable collidable);
-
-	void getDamageFromMonster(int damage);
-	
-	void getDamageFromPlayer(int damage);
-	
-	void goBack(Collidable collidable);
+	void acceptCollision(Collision collision);
 }

@@ -11,12 +11,10 @@ public class Controller implements KeyListener {
 
 	public Controller(Game game) {
 		this.game = game;
-
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-
 	}
 
 	@Override
@@ -43,6 +41,13 @@ public class Controller implements KeyListener {
 				game.getPlayers().get(0).setReadyToAttack(false);
 			}
 			break;
+		case KeyEvent.VK_H:
+			game.playerUseHealPotion();
+			break;
+		case KeyEvent.VK_M:
+			game.playerUseManaPotion();
+		case KeyEvent.VK_A:
+			game.switchWeapon();
 		}
 	}
 
